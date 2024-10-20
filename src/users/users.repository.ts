@@ -9,4 +9,21 @@ export class UsersRepository extends Repository<User> {
   ) {
     super(repository.target, repository.manager, repository.queryRunner);
   }
+
+  async findByEmail(email: User['email']) {
+    return this.repository.findOneBy({
+      email,
+    });
+  }
+
+  async findForAuth(email: User['email']) {
+    return this.repository.findOne({
+      where: { email },
+      select: {
+        email: true,
+        uuid: true,
+        passkey: true,
+      },
+    });
+  }
 }

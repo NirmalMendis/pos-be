@@ -7,6 +7,7 @@ import { User } from 'src/users/entities/user.entity';
   imports: [
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
+      inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
         host: configService.get('DB_HOST'),
@@ -18,7 +19,6 @@ import { User } from 'src/users/entities/user.entity';
         autoLoadEntities: true,
         synchronize: true,
       }),
-      inject: [ConfigService],
     }),
   ],
 })

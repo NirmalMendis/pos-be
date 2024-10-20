@@ -1,5 +1,6 @@
 import { BaseEntity } from 'src/database/base.entity';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, BeforeUpdate, BeforeInsert } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
 @Entity()
 export class User extends BaseEntity {
@@ -12,6 +13,11 @@ export class User extends BaseEntity {
   @Column({ unique: true })
   email: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, select: false })
   passkey: string;
+
+  @BeforeInsert()
+  async updatePassword() {
+    this.passkey = await bcrypt.hash(this.email + this.passkey, 12);
+  }
 }
