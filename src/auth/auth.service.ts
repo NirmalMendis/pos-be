@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
+import { SuccessResponse } from 'src/utils/responses/success.response';
 
 @Injectable()
 export class AuthService {
@@ -25,10 +26,14 @@ export class AuthService {
 
   async login(user: any) {
     const payload = { email: user.email, sub: user.userId };
-    return {
+    const userDetails = {
+      user: {
+        ...user,
+      },
       accessToken: this.jwtService.sign(payload, {
         expiresIn: this.configService.get('ACCESS_TOKEN_EXPIRES_IN'),
       }),
     };
+    return new SuccessResponse(userDetails);
   }
 }
