@@ -21,7 +21,6 @@ export class UsersRepository extends Repository<User> {
       where: { email },
       select: {
         email: true,
-        uuid: true,
         passkey: true,
       },
     });
